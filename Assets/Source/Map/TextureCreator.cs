@@ -31,11 +31,6 @@ public class TextureCreator
         }
 
         resultTexture.Apply();
-
-
-                Debug.Log(resultTexture.GetPixel(0, 0));
-
-
         return resultTexture;
     }
 
