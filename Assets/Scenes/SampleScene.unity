@@ -414,6 +414,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _colorSetter: {fileID: 2086068596}
   _spriteRenderer: {fileID: 374577266}
+  _plainsSizeFactor: 0.7
+  _forestSpawnFrequency: 75
 --- !u!114 &2086068596
 MonoBehaviour:
   m_ObjectHideFlags: 0
