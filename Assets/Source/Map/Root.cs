@@ -2,8 +2,8 @@
 using System;
 using System.Threading.Tasks;
 using TMPro;
-using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Root : MonoBehaviour
 {
@@ -20,9 +20,13 @@ public class Root : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject _loadingScreen;
     [SerializeField] private TextMeshProUGUI _loadingProgressField;
+    [SerializeField] private Button _saveButton;
+    [SerializeField] private Button _loadButton;
+    [SerializeField] private MapZoom _mapZoom;
 
     private Map _map;
     private TextureCreator _textureCreator;
+    private SaveManager _saveManager;
 
     private async void Start()
     {
@@ -37,9 +41,35 @@ public class Root : MonoBehaviour
         _loadingProgressField.text = "Generating rivers";
         await Task.Run(() => { _map.GenerateRivers(); });
 
+        _loadingProgressField.text = "Creating texture";
         CreateTexture(_map.Data);
 
         _loadingScreen.SetActive(false);
+        _saveManager = new SaveManager();
+        MouseInput mouseInput = new MouseInput();
+        _mapZoom.Init(mouseInput);
+    }
+
+    private void OnEnable()
+    {
+        _saveButton.onClick.AddListener(OnSaveButtonClick);
+        _loadButton.onClick.AddListener(OnLoadButtonClick);
+    }
+
+    private void OnDisable()
+    {
+        _saveButton.onClick.RemoveListener(OnSaveButtonClick);
+        _loadButton.onClick.RemoveListener(OnLoadButtonClick);
+    }
+
+    private void OnLoadButtonClick()
+    {
+        CreateTexture(_saveManager.LoadFromFile());
+    }
+
+    private void OnSaveButtonClick()
+    {
+        _saveManager.SaveToFile(_map.Data);
     }
 
     private void CreateTexture(IEnumerable<byte> map)
