@@ -1239,9 +1239,10 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 374577266}
   _plainsSizeFactor: 0.6
   _forestSpawnFrequency: 40
-  _riverWidth: 0.8
-  _riverFrequency: 20
-  _riverPerlinFactor: 100
+  _riverWidth: 0.2
+  _riverFrequency: 50
+  _distanceBetweenCities: 100
+  _spread: 20
   _loadingScreen: {fileID: 1926354242}
   _loadingProgressField: {fileID: 368496563}
   _saveButton: {fileID: 307402300}

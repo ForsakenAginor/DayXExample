@@ -30,6 +30,7 @@ public class TextureCreator
             }
         }
 
+        resultTexture.filterMode = FilterMode.Bilinear;
         resultTexture.Apply();
         return resultTexture;
     }

@@ -12,9 +12,8 @@ public class Map
     private readonly float _forestSpawnFrequency;
     private readonly float _riverWidth;
     private readonly float _riverFrequency;
-    private readonly float _riverPerlinFrequency;
 
-    public Map(float plainsSizeFactor, float forestSpawnFrequency, float riverWidth, float riverFrequency, float riverPerlinFrequency)
+    public Map(float plainsSizeFactor, float forestSpawnFrequency, float riverWidth, float riverFrequency)
     {
         _plainsSizeFactor = plainsSizeFactor >= 0 && plainsSizeFactor <= 1 ?
             plainsSizeFactor :
@@ -26,10 +25,11 @@ public class Map
 
         _riverWidth = riverWidth;
         _riverFrequency = riverFrequency;
-        _riverPerlinFrequency = riverPerlinFrequency;
     }
 
     public IEnumerable<byte> Data => _mapContent;
+
+    public uint GetSize() => Size;
 
     public void GenerateForest()
     {
@@ -64,11 +64,10 @@ public class Map
         {
             for (int x = 0; x < Size; x++)
             {
-                result = GetPerlinNoiseValue(x, y, _riverPerlinFrequency);
                 float fx = x / (Size - 1.0f);
                 float fy = y / (Size - 1.0f);
 
-                result += noise.Sample2D(fx, fy);
+                result = noise.Sample2D(fx, fy);
 
                 if (result < _riverWidth)
                     _mapContent[index] = Encode(Biom.Water, TileFlags.None);

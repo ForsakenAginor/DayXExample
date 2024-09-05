@@ -15,7 +15,10 @@ public class Root : MonoBehaviour
     [SerializeField] private float _forestSpawnFrequency;
     [SerializeField] private float _riverWidth;
     [SerializeField] private float _riverFrequency;
-    [SerializeField] private float _riverPerlinFactor;
+
+    [Header("Cities")]
+    [SerializeField] private int _distanceBetweenCities;
+    [SerializeField] private int _spread;
 
     [Header("UI")]
     [SerializeField] private GameObject _loadingScreen;
@@ -32,7 +35,7 @@ public class Root : MonoBehaviour
     {
         _loadingScreen.SetActive(true);
         _loadingProgressField.text = "Creating map";
-        _map = new(_plainsSizeFactor, _forestSpawnFrequency, _riverWidth, _riverFrequency, _riverPerlinFactor);
+        _map = new(_plainsSizeFactor, _forestSpawnFrequency, _riverWidth, _riverFrequency);
         _textureCreator = new(_colorSetter.BiomColorPairs);
 
         _loadingProgressField.text = "Generating forests";
@@ -40,6 +43,9 @@ public class Root : MonoBehaviour
 
         _loadingProgressField.text = "Generating rivers";
         await Task.Run(() => { _map.GenerateRivers(); });
+
+        _loadingProgressField.text = "Spawning cities";
+        CitiesSpawner citiesSpawner = new(_map.GetSize(), _distanceBetweenCities, _spread);
 
         _loadingProgressField.text = "Creating texture";
         CreateTexture(_map.Data);
